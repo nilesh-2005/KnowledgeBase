@@ -1,0 +1,49 @@
+---
+import '../styles/globals.css';
+import Navbar from '../components/Navbar.astro';
+import { AuthProvider } from '../lib/auth';
+
+interface Props {
+  title?: string;
+  description?: string;
+  currentPath?: string;
+}
+
+const { 
+  title = 'Knowledge Base',
+  description = 'A comprehensive knowledge base system',
+  currentPath = '/',
+} = Astro.props as Props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-canvas">
+    <AuthProvider client:load>
+      <Navbar currentPath={currentPath} />
+      <main class="min-h-screen bg-canvas">
+        <slot />
+      </main>
+      <footer class="bg-soft-cloud border-t border-hairline-soft py-section mt-section">
+        <div class="container-xl text-center text-caption-md text-mute">
+          <p>&copy; 2026 Knowledge Base. All rights reserved.</p>
+        </div>
+      </footer>
+    </AuthProvider>
+  </body>
+</html>
+
+<style>
+  :global(body) {
+    margin: 0;
+    padding: 0;
+  }
+</style>

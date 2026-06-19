@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { AuthGuard } from '../components/AuthGuard';
+---
+
+<Layout title="Dashboard - Knowledge Base" currentPath="/dashboard">
+  <AuthGuard client:only="react">
+    <div class="container-xl py-section">
+      <div class="mb-section">
+        <h2 class="text-heading-xl text-primary mb-4">Dashboard</h2>
+        <p class="text-body-md text-mute">Welcome to your knowledge base dashboard</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-section">
+        <div class="card p-6 border border-hairline-soft">
+          <h3 class="text-heading-md text-ink mb-2">📝 Documents</h3>
+          <p class="text-body-md text-mute mb-4">Manage your knowledge documents</p>
+          <a href="#" class="btn-secondary text-sm">Browse</a>
+        </div>
+
+        <div class="card p-6 border border-hairline-soft">
+          <h3 class="text-heading-md text-ink mb-2">🏷️ Tags</h3>
+          <p class="text-body-md text-mute mb-4">Organize with custom tags</p>
+          <a href="#" class="btn-secondary text-sm">Manage</a>
+        </div>
+
+        <div class="card p-6 border border-hairline-soft">
+          <h3 class="text-heading-md text-ink mb-2">👥 Sharing</h3>
+          <p class="text-body-md text-mute mb-4">Share knowledge with others</p>
+          <a href="#" class="btn-secondary text-sm">Configure</a>
+        </div>
+      </div>
+
+      <div class="mt-section bg-soft-cloud p-6 rounded-lg">
+        <h3 class="text-heading-md text-ink mb-4">Quick Stats</h3>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center">
+            <div class="text-heading-lg text-primary font-bold mb-1">0</div>
+            <p class="text-caption-sm text-mute">Documents</p>
+          </div>
+          <div class="text-center">
+            <div class="text-heading-lg text-primary font-bold mb-1">0</div>
+            <p class="text-caption-sm text-mute">Tags</p>
+          </div>
+          <div class="text-center">
+            <div class="text-heading-lg text-primary font-bold mb-1">0</div>
+            <p class="text-caption-sm text-mute">Shared Items</p>
+          </div>
+          <div class="text-center">
+            <div class="text-heading-lg text-success font-bold mb-1">100%</div>
+            <p class="text-caption-sm text-mute">Storage Used</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </AuthGuard>
+</Layout>

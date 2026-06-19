@@ -1,46 +1,28 @@
-# Astro Starter Kit: Basics
+# Knowledge Base Platform
 
-```sh
-npm create astro@latest -- --template basics
-```
+Enterprise-grade knowledge base platform with an Astro frontend and a Spring Boot backend.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Phase 1
 
-## 🚀 Project Structure
+This phase delivers the backend foundation only.
 
-Inside of your Astro project, you'll see the following folders and files:
+- JWT authentication
+- Role-based user management
+- PostgreSQL persistence
+- Validation and exception handling
+- Auditing
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+## Current status
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+- Backend implemented under `backend/`
+- Frontend is reserved for the Astro UI phase and will follow the existing design direction in `DESIGN.md`
 
-## 🧞 Commands
+## Next phases
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Document upload
+- PDF processing
+- Spring AI integration
+- pgvector semantic retrieval
+- RAG chat
+- Semantic search
+- Audit logs
