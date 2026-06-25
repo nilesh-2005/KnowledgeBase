@@ -1,19 +1,21 @@
 package com.nilesh.knowledgebase.service;
 
-import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
+import com.nilesh.knowledgebase.dto.PageResponse;
 import com.nilesh.knowledgebase.dto.UpdateUserRequest;
 import com.nilesh.knowledgebase.dto.UserResponse;
 import com.nilesh.knowledgebase.entity.Role;
 import com.nilesh.knowledgebase.entity.User;
+import com.nilesh.knowledgebase.entity.AuditAction;
 import com.nilesh.knowledgebase.exception.DuplicateEmailException;
 import com.nilesh.knowledgebase.exception.ResourceNotFoundException;
+import com.nilesh.knowledgebase.mapper.UserMapper;
 import com.nilesh.knowledgebase.repository.UserRepository;
 import com.nilesh.knowledgebase.security.UserPrincipal;
+import com.nilesh.knowledgebase.util.EmailNormalizer;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,25 +27,28 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
+	private final UserMapper userMapper;
+	private final EmailNormalizer emailNormalizer;
+	private final AuditLogService auditLogService;
 
 	@Override
 	@Transactional(readOnly = true)
 	public UserResponse getCurrentUser(UserPrincipal principal) {
-		return toUserResponse(loadCurrentUser(principal));
+		return userMapper.toResponse(loadCurrentUser(principal));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<UserResponse> getAllUsers(UserPrincipal principal) {
+	public PageResponse<UserResponse> getAllUsers(UserPrincipal principal, Pageable pageable) {
 		requireAdmin(principal);
-		return userRepository.findAll().stream().map(this::toUserResponse).collect(Collectors.toList());
+		return PageResponse.from(userRepository.findAll(pageable).map(userMapper::toResponse));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public UserResponse getUserById(UUID id, UserPrincipal principal) {
 		requireSelfOrAdmin(id, principal);
-		return toUserResponse(findById(id));
+		return userMapper.toResponse(findById(id));
 	}
 
 	@Override
@@ -54,7 +59,7 @@ public class UserServiceImpl implements UserService {
 			throw new AccessDeniedException("You cannot update this user");
 		}
 
-		String normalizedEmail = normalizeEmail(request.email());
+		String normalizedEmail = emailNormalizer.normalize(request.email());
 		userRepository.findByEmailIgnoreCase(normalizedEmail)
 			.filter(existing -> !existing.getId().equals(user.getId()))
 			.ifPresent(existing -> {
@@ -67,7 +72,7 @@ public class UserServiceImpl implements UserService {
 			user.setRole(request.role());
 		}
 
-		return toUserResponse(userRepository.save(user));
+		return userMapper.toResponse(userRepository.save(user));
 	}
 
 	@Override
@@ -78,6 +83,24 @@ public class UserServiceImpl implements UserService {
 			throw new ResourceNotFoundException("User not found");
 		}
 		userRepository.deleteById(id);
+		
+		auditLogService.logAction(AuditAction.USER_DELETE, principal.getId(), id, "Deleted user");
+	}
+
+	@Override
+	@Transactional
+	public UserResponse changeUserRole(UUID id, Role role, UserPrincipal principal) {
+		requireAdmin(principal);
+		User user = findById(id);
+		if (user.getId().equals(principal.getId())) {
+			throw new AccessDeniedException("Admin cannot change their own role");
+		}
+		user.setRole(role);
+		User savedUser = userRepository.save(user);
+		
+		auditLogService.logAction(AuditAction.USER_ROLE_CHANGE, principal.getId(), id, "Changed role to: " + role.name());
+		
+		return userMapper.toResponse(savedUser);
 	}
 
 	private User loadCurrentUser(UserPrincipal principal) {
@@ -106,11 +129,4 @@ public class UserServiceImpl implements UserService {
 		return principal != null && principal.getRole() == Role.ADMIN;
 	}
 
-	private UserResponse toUserResponse(User user) {
-		return new UserResponse(user.getId(), user.getFullName(), user.getEmail(), user.getRole(), user.getCreatedAt(), user.getUpdatedAt());
-	}
-
-	private String normalizeEmail(String email) {
-		return email.trim().toLowerCase(Locale.ROOT);
-	}
 }

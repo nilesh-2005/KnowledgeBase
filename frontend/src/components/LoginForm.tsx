@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { apiClient, type LoginRequest } from '../lib/api';
 import { useAuth } from '../lib/auth';
+import { Button } from './ui/Button';
+import { Input } from './ui/Input';
 
 export function LoginForm() {
   const { login } = useAuth();
@@ -19,7 +21,7 @@ export function LoginForm() {
       const request: LoginRequest = { email, password };
       const response = await apiClient.login(request);
 
-      if (response.status === 'success' && response.data) {
+      if (response.success && response.data) {
         login(response.data.token, response.data.user);
         setSuccess(true);
         // Redirect after 1 second
@@ -38,64 +40,62 @@ export function LoginForm() {
 
   if (success) {
     return (
-      <div className="text-center py-8">
-        <p className="text-success text-body-strong mb-2">✓ Login successful!</p>
-        <p className="text-mute">Redirecting to dashboard...</p>
+      <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm">
+        <p className="font-medium text-green-700">Login successful</p>
+        <p className="mt-1 text-green-700/80">Redirecting to dashboard...</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
+    <form onSubmit={handleSubmit} className="w-full space-y-4">
       {error && (
-        <div className="bg-red-100 border border-sale text-sale px-4 py-3 rounded-md text-body-md">
+        <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-error">
           {error}
         </div>
       )}
       
-      <div>
-        <label htmlFor="email" className="block text-body-strong text-ink mb-2">
+      <div className="space-y-1.5">
+        <label htmlFor="email" className="block text-sm font-medium text-text-main">
           Email
         </label>
-        <input
+        <Input
           id="email"
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
-          className="input-pill"
+          placeholder="name@company.com"
         />
       </div>
 
-      <div>
-        <label htmlFor="password" className="block text-body-strong text-ink mb-2">
+      <div className="space-y-1.5">
+        <label htmlFor="password" className="block text-sm font-medium text-text-main">
           Password
         </label>
-        <input
+        <Input
           id="password"
           type="password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
-          className="input-pill"
+          placeholder="Password"
         />
       </div>
 
-      <button
+      <Button
         type="submit"
-        disabled={isLoading}
-        className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+        isLoading={isLoading}
+        className="mt-2 w-full"
       >
-        {isLoading ? 'Signing In...' : 'Sign In'}
-      </button>
+        Sign in
+      </Button>
 
-      <div className="text-center">
-        <p className="text-body-md text-mute">
+      <div className="mt-6 text-center">
+        <p className="text-sm text-text-muted">
           Don't have an account?{' '}
-          <a href="/register" className="text-primary font-bold hover:text-charcoal">
-            Sign Up
+          <a href="/register" className="text-primary font-medium hover:text-text-muted transition-colors">
+            Create account
           </a>
         </p>
       </div>

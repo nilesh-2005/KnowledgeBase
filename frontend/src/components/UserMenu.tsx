@@ -1,45 +1,66 @@
 import React from 'react';
+import { ChevronDown, LogOut, UserCircle } from 'lucide-react';
 import { useAuth } from '../lib/auth';
+import { Dropdown, DropdownContent, DropdownItem, DropdownTrigger } from './ui/Dropdown';
+import { Badge } from './ui/Badge';
+
+function initialsFromName(name: string) {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('');
+}
 
 export function UserMenu() {
   const { user, logout, isAuthenticated } = useAuth();
-  const [isOpen, setIsOpen] = React.useState(false);
 
   if (!isAuthenticated || !user) {
     return null;
   }
 
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-body-strong text-ink hover:bg-soft-cloud rounded-md transition-colors"
-      >
-        <span>{user.name}</span>
-        <span className="text-sm">▼</span>
-      </button>
+  const initials = initialsFromName(user.fullName) || 'U';
 
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-canvas border border-hairline-soft rounded-md shadow-lg z-50">
-          <div className="px-4 py-3 border-b border-hairline-soft">
-            <p className="text-caption-md text-mute">{user.email}</p>
-            {user.roles && user.roles.length > 0 && (
-              <p className="text-caption-sm text-mute mt-1">
-                {user.roles.join(', ')}
-              </p>
-            )}
+  return (
+    <Dropdown>
+      <DropdownTrigger className="flex h-9 items-center gap-2 rounded-md border border-border bg-panel px-2 text-sm font-medium text-text-main hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus">
+        <span className="flex h-6 w-6 items-center justify-center rounded-md bg-surface text-xs font-semibold text-text-muted">
+          {initials}
+        </span>
+        <span className="hidden max-w-32 truncate lg:block">{user.fullName}</span>
+        <ChevronDown className="h-4 w-4 text-text-subtle" />
+      </DropdownTrigger>
+
+      <DropdownContent>
+        <div className="border-b border-border px-3 py-2.5">
+          <div className="flex items-start gap-2">
+            <UserCircle className="mt-0.5 h-4 w-4 shrink-0 text-text-subtle" />
+            <div className="min-w-0">
+              <p className="truncate text-sm font-medium text-text-main">{user.fullName}</p>
+              <p className="truncate text-xs text-text-muted">{user.email}</p>
+              <Badge variant="secondary" className="mt-2 capitalize">
+                {user.role.toLowerCase()}
+              </Badge>
+            </div>
           </div>
-          <button
-            onClick={() => {
-              logout();
-              window.location.href = '/login';
-            }}
-            className="block w-full text-left px-4 py-2 text-body-md text-sale hover:bg-soft-cloud transition-colors"
-          >
-            Sign Out
-          </button>
         </div>
-      )}
-    </div>
+
+        <a className="flex items-center gap-2 px-3 py-2 text-sm text-text-main hover:bg-surface" href="/profile">
+          <UserCircle className="h-4 w-4 text-text-subtle" />
+          Profile
+        </a>
+        <DropdownItem
+          className="text-error hover:bg-red-50"
+          onSelect={() => {
+            logout();
+            window.location.href = '/login';
+          }}
+        >
+          <LogOut className="h-4 w-4" />
+          Sign out
+        </DropdownItem>
+      </DropdownContent>
+    </Dropdown>
   );
 }

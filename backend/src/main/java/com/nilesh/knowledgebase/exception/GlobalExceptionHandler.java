@@ -52,6 +52,20 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(ApiResponse.error("Request could not be processed"));
 	}
 
+	@ExceptionHandler(com.nilesh.knowledgebase.exception.LlmServiceUnavailableException.class)
+	public ResponseEntity<ApiResponse<Void>> handleLlmUnavailable(
+			com.nilesh.knowledgebase.exception.LlmServiceUnavailableException exception) {
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+				.body(ApiResponse.error("AI service temporarily unavailable"));
+	}
+
+	@ExceptionHandler(com.nilesh.knowledgebase.exception.LlmTimeoutException.class)
+	public ResponseEntity<ApiResponse<Void>> handleLlmTimeout(
+			com.nilesh.knowledgebase.exception.LlmTimeoutException exception) {
+		return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT)
+				.body(ApiResponse.error("Answer generation timed out"));
+	}
+
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Void>> handleGeneric(Exception exception) {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.error("Unexpected server error"));

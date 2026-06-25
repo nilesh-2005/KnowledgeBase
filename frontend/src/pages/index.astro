@@ -1,51 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { AppEntry } from '../components/AppEntry';
 ---
 
-<Layout title="Knowledge Base - Your Personal Knowledge Hub" currentPath="/">
-  <div class="min-h-screen flex flex-col items-center justify-center px-4 bg-gradient-to-b from-canvas to-soft-cloud">
-    <div class="text-center max-w-2xl">
-      <h1 class="text-display-campaign text-primary mb-6 uppercase">
-        Knowledge Base
-      </h1>
-      
-      <p class="text-heading-lg text-ink mb-4">
-        Your Personal Knowledge Hub
-      </p>
-      
-      <p class="text-body-md text-mute mb-8 leading-relaxed">
-        Organize, store, and share your knowledge with a powerful and intuitive knowledge base system. 
-        Built for individuals and teams who value clarity, accessibility, and seamless collaboration.
-      </p>
-
-      <div class="flex gap-4 justify-center flex-wrap">
-        <a href="/login" class="btn-primary">
-          Sign In
-        </a>
-        <a href="/register" class="btn-secondary">
-          Create Account
-        </a>
-      </div>
-
-      <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="text-center">
-          <div class="text-heading-lg text-primary mb-2">📚</div>
-          <h3 class="text-heading-md text-ink mb-2">Organize</h3>
-          <p class="text-body-md text-mute">Structure your knowledge in a way that makes sense to you</p>
-        </div>
-        
-        <div class="text-center">
-          <div class="text-heading-lg text-primary mb-2">🔒</div>
-          <h3 class="text-heading-md text-ink mb-2">Secure</h3>
-          <p class="text-body-md text-mute">Your data is protected with enterprise-grade security</p>
-        </div>
-        
-        <div class="text-center">
-          <div class="text-heading-lg text-primary mb-2">⚡</div>
-          <h3 class="text-heading-md text-ink mb-2">Fast</h3>
-          <p class="text-body-md text-mute">Access your knowledge instantly from anywhere</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<Layout title="Knowledge Base" currentPath="/">
+  <AppEntry client:load />
 </Layout>

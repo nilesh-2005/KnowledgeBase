@@ -1,0 +1,46 @@
+---
+import '../styles/globals.css';
+import { Sidebar } from '../components/Sidebar';
+import { TopNav } from '../components/TopNav';
+import { AuthGuard } from '../components/AuthGuard';
+
+interface Props {
+  title?: string;
+  description?: string;
+  currentPath?: string;
+}
+
+const { 
+  title = 'Dashboard - Knowledge Base',
+  description = 'Knowledge Base Management Dashboard',
+  currentPath = '/dashboard',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-canvas text-text-main font-sans antialiased">
+    <AuthGuard client:only="react">
+      <div class="min-h-screen bg-canvas">
+        <div class="fixed inset-y-0 left-0 z-30 hidden w-64 md:block">
+          <Sidebar client:only="react" currentPath={currentPath} />
+        </div>
+        
+        <TopNav client:only="react" currentPath={currentPath} />
+        <main class="min-h-screen pt-14 md:pl-64">
+          <div class="mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+            <slot />
+          </div>
+        </main>
+      </div>
+    </AuthGuard>
+  </body>
+</html>

@@ -1,0 +1,170 @@
+
+> knowledge-base@0.0.1 dev
+> astro dev --host 127.0.0.1 --port 4321
+
+[vite] connected.
+[2m13:29:59[22m [34m[types][39m Generated [2m2ms[22m
+[vite] connected.
+[2m13:29:59[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+[42m[1m astro [22m[49m [32mv6.4.8[39m [2mready in[22m 3221 [2mms[22m
+[2m┃[22m Local    [36mhttp://127.0.0.1:4321/[39m
+[2m13:29:59[22m [32mwatching for file changes...[39m
+[2m13:30:54[22m [34m[200][39m /dashboard [2m112ms[22m
+[2m13:30:54[22m [34m[200][39m /login [2m48ms[22m
+[2m13:31:29[22m [34m[200][39m /dashboard [2m31ms[22m
+[2m13:31:29[22m [34m[200][39m /login [2m5ms[22m
+[2m13:32:11[22m [34m[200][39m /login [2m5ms[22m
+[2m13:32:12[22m [34m[200][39m /dashboard [2m11ms[22m
+[2m13:32:29[22m [34m[watch][39m /src/styles/globals.css
+[2m13:47:52[22m [34m[200][39m /register [2m23ms[22m
+[2m13:47:52[22m [34m[200][39m /settings [2m25ms[22m
+[2m13:57:13[22m [34m[watch][39m /src/styles/globals.css, /src/components/LoginForm.tsx, /src/components/RegisterForm.tsx
+[33m[1m13:58:04[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:58:04[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[33m[1m13:58:18[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:58:18[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[33m[1m13:58:20[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:58:20[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[33m[1m13:58:33[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:58:33[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[33m[1m13:58:35[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:58:35[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[33m[1m13:58:55[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:58:55[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[33m[1m13:58:57[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:58:57[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[33m[1m13:59:12[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:59:12[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[2m13:59:49[22m [34m[watch][39m /src/styles/globals.css
+[33m[1m13:59:49[22m [WARN] [router][39m The route "/documents" is defined in both "src/pages/documents/index.astro" and "src/pages/documents.astro". A static route cannot be defined more than once.
+[33m[1m13:59:49[22m [WARN] [router][39m A collision will result in a hard error in following versions of Astro.
+[2m13:59:51[22m [34m[watch][39m /src/styles/globals.css
+[2m14:00:06[22m [34m[watch][39m /src/styles/globals.css
+[2m14:00:08[22m [34m[watch][39m /src/styles/globals.css
+[2m14:26:57[22m [34m[watch][39m /src/styles/globals.css, /src/components/LoginForm.tsx, /src/components/RegisterForm.tsx
+[2m14:29:02[22m [34m[watch][39m /src/styles/globals.css, /src/components/LoginForm.tsx, /src/components/RegisterForm.tsx
+[2m14:34:05[22m [34m[watch][39m /src/styles/globals.css
+[2m14:34:07[22m [34m[watch][39m /src/styles/globals.css
+[2m14:38:01[22m [34m[watch][39m /src/styles/globals.css, /src/components/Sidebar.tsx, /src/components/TopNav.tsx
+[2m14:40:11[22m [34m[watch][39m /src/styles/globals.css
+[2m14:44:56[22m [34m[watch][39m /src/styles/globals.css
+[2m14:45:50[22m [34m[watch][39m /src/styles/globals.css
+[2m14:55:39[22m Configuration file updated. Restarting...
+[2m14:55:39[22m [34m[watch][39m /src/styles/globals.css
+[vite] connected.
+[vite] connected.
+[2m14:55:41[22m [34m[vite][39m Re-optimizing dependencies because lockfile has changed
+[2m14:55:41[22m [34m[vite][39m server restarted.
+[2m14:55:42[22m [34m[200][39m /documents/d2ba8cca-cbb3-41b3-968a-bf4d290fb50f [2m63ms[22m
+[2m14:55:42[22m [34m[200][39m /documents/d2ba8cca-cbb3-41b3-968a-bf4d290fb50f [2m6ms[22m
+[2m14:55:45[22m Configuration file updated. Restarting...
+[2m14:55:45[22m [34m[watch][39m /src/styles/globals.css
+[2m14:55:45[22m [34m[@astrojs/node][39m Enabling sessions with filesystem storage
+[vite] connected.
+[vite] connected.
+[2m14:55:47[22m [34m[vite][39m Re-optimizing dependencies because vite config has changed
+[2m14:55:47[22m [34m[vite][39m server restarted.
+[2m14:55:48[22m [34m[200][39m /documents/d2ba8cca-cbb3-41b3-968a-bf4d290fb50f [2m78ms[22m
+[2m14:55:48[22m [34m[200][39m /documents/d2ba8cca-cbb3-41b3-968a-bf4d290fb50f [2m6ms[22m
+[2m14:57:35[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:02:38[22m [34m[watch][39m /src/styles/globals.css
+[2m15:03:40[22m [34m[watch][39m /src/styles/globals.css, /src/components/TopNav.tsx
+[2m15:04:10[22m [34m[watch][39m /src/styles/globals.css
+[2m15:10:04[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:15:40[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:16:08[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:16:29[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:18:06[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:22:25[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:22:27[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:24:07[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:28:08[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:38:31[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:39:05[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx
+[2m15:40:37[22m [34m[watch][39m /src/styles/globals.css, /src/components/Sidebar.tsx
+[2m15:47:45[22m [34m[200][39m /tags [2m61ms[22m
+[2m16:11:34[22m [34m[200][39m /tags [2m24ms[22m
+[2m16:12:02[22m [34m[200][39m /tags [2m6ms[22m
+[2m16:12:04[22m [34m[200][39m /dashboard [2m54ms[22m
+[2m16:12:06[22m [34m[200][39m /documents [2m23ms[22m
+[2m16:12:09[22m [34m[200][39m /documents/29f679e6-5f96-46cf-bb29-a8ed70e35a65 [2m4ms[22m
+[2m16:12:11[22m [34m[200][39m /tags [2m5ms[22m
+[2m16:20:14[22m [34m[200][39m /tags [2m5ms[22m
+[2m16:20:25[22m [34m[200][39m /collections [2m29ms[22m
+[2m16:37:01[22m [34m[200][39m /collections [2m4ms[22m
+[2m16:37:03[22m [34m[200][39m /dashboard [2m16ms[22m
+[2m16:37:04[22m [34m[200][39m /documents [2m6ms[22m
+[2m16:37:06[22m [34m[200][39m /documents [2m4ms[22m
+[2m16:38:45[22m [34m[200][39m /documents [2m4ms[22m
+[2m16:39:01[22m [34m[200][39m /documents [2m6ms[22m
+[2m16:39:03[22m [34m[200][39m /documents [2m4ms[22m
+[2m16:43:08[22m [34m[200][39m /documents [2m7ms[22m
+[2m16:43:11[22m [34m[200][39m /documents/29f679e6-5f96-46cf-bb29-a8ed70e35a65 [2m5ms[22m
+[2m16:43:17[22m [34m[200][39m /dashboard [2m21ms[22m
+[2m16:43:37[22m [34m[200][39m /documents [2m5ms[22m
+[2m16:43:39[22m [34m[200][39m /documents/upload [2m38ms[22m
+[2m16:44:14[22m [34m[200][39m /documents [2m4ms[22m
+[2m16:48:28[22m [34m[200][39m /documents/upload [2m5ms[22m
+[2m16:48:42[22m [34m[200][39m /documents [2m5ms[22m
+[2m17:09:30[22m [34m[200][39m /documents [2m34ms[22m
+[2m17:09:37[22m [34m[200][39m /documents/b1f92569-2466-4824-8633-118a4978c7c8 [2m21ms[22m
+[2m17:09:41[22m [34m[200][39m /documents [2m12ms[22m
+[2m17:09:43[22m [34m[200][39m /documents/29f679e6-5f96-46cf-bb29-a8ed70e35a65 [2m7ms[22m
+[2m17:09:45[22m [34m[200][39m /documents [2m12ms[22m
+[2m17:09:46[22m [34m[200][39m /documents/6eabad0c-be42-4a27-8090-2f868f39a15b [2m7ms[22m
+[2m17:09:47[22m [34m[200][39m /documents [2m9ms[22m
+[2m17:10:49[22m [34m[200][39m /documents/upload [2m17ms[22m
+[2m17:11:03[22m [34m[200][39m /documents [2m9ms[22m
+[2m17:16:07[22m [34m[200][39m /documents/12810c13-7302-474d-aac5-18bf878403c0 [2m6ms[22m
+[2m17:27:14[22m [34m[200][39m /login [2m51ms[22m
+[2m17:27:18[22m [34m[200][39m /dashboard [2m27ms[22m
+[2m17:27:22[22m [34m[200][39m /documents [2m5ms[22m
+[2m17:27:24[22m [34m[200][39m /documents/9c853e57-4322-49d7-9bdf-d648006793cc [2m4ms[22m
+[2m17:28:22[22m [34m[200][39m /documents [2m6ms[22m
+[2m17:28:25[22m [34m[200][39m /login [2m5ms[22m
+[2m17:28:29[22m [34m[200][39m /dashboard [2m16ms[22m
+[2m17:28:31[22m [34m[200][39m /documents [2m5ms[22m
+[2m17:33:23[22m [34m[200][39m /documents [2m4ms[22m
+[2m17:33:28[22m [34m[200][39m /documents/9c853e57-4322-49d7-9bdf-d648006793cc [2m5ms[22m
+[2m17:33:36[22m [34m[200][39m /documents/b19b4f26-2988-4a0d-aec8-e191b6224fa6 [2m4ms[22m
+[2m17:33:42[22m [34m[200][39m /documents/9c853e57-4322-49d7-9bdf-d648006793cc [2m3ms[22m
+[2m17:33:45[22m [34m[200][39m /documents [2m7ms[22m
+[2m17:33:48[22m [34m[200][39m /login [2m6ms[22m
+[2m17:33:51[22m [34m[200][39m /dashboard [2m24ms[22m
+[2m17:33:53[22m [34m[200][39m /documents [2m4ms[22m
+[2m17:33:55[22m [34m[200][39m /documents/upload [2m5ms[22m
+[2m17:33:58[22m [34m[200][39m /login [2m4ms[22m
+[2m17:34:04[22m [34m[200][39m /dashboard [2m27ms[22m
+[2m20:15:47[22m [34m[200][39m /dashboard [2m102ms[22m
+[2m20:43:42[22m [34m[200][39m /dashboard [2m61ms[22m
+[2m20:46:11[22m [34m[200][39m /dashboard [2m39ms[22m
+[2m20:46:15[22m [34m[200][39m /documents [2m11ms[22m
+[2m20:46:24[22m [34m[200][39m /dashboard [2m28ms[22m
+[2m20:46:26[22m [34m[200][39m /documents [2m8ms[22m
+[2m20:46:35[22m [34m[200][39m /documents [2m8ms[22m
+[2m20:46:57[22m [34m[200][39m /dashboard [2m29ms[22m
+[2m20:47:03[22m [34m[200][39m /collections [2m7ms[22m
+[2m20:47:08[22m [34m[200][39m /search [2m61ms[22m
+[2m20:47:10[22m [34m[200][39m /tags [2m6ms[22m
+[2m20:49:18[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx, /src/components/tags/TagsPageWrapper.tsx, /src/components/dashboard/DashboardStats.tsx, /src/components/documents/DocumentsPageWrapper.tsx, /src/components/collections/CollectionsPageWrapper.tsx, /src/components/documents/UploadPageWrapper.tsx, /src/components/documents/MetadataForm.tsx, /src/components/LoginForm.tsx, /src/components/search/SearchWrapper.tsx
+[2m20:49:20[22m [34m[200][39m /login [2m28ms[22m
+[2m20:49:29[22m [34m[watch][39m /src/styles/globals.css, /src/components/documents/DocumentDetailWrapper.tsx, /src/components/tags/TagsPageWrapper.tsx, /src/components/dashboard/DashboardStats.tsx, /src/components/documents/DocumentsPageWrapper.tsx, /src/components/collections/CollectionsPageWrapper.tsx, /src/components/documents/UploadPageWrapper.tsx, /src/components/documents/MetadataForm.tsx, /src/components/LoginForm.tsx, /src/components/search/SearchWrapper.tsx
+[2m20:55:24[22m [34m[200][39m /login [2m16ms[22m
+[2m20:55:28[22m [34m[200][39m /dashboard [2m32ms[22m
+[2m20:56:49[22m [34m[200][39m /documents [2m7ms[22m
+[2m20:56:51[22m [34m[200][39m /collections [2m7ms[22m
+[2m20:56:53[22m [34m[200][39m /search [2m11ms[22m
+[2m20:56:54[22m [34m[200][39m /tags [2m7ms[22m
+[2m20:56:55[22m [34m[200][39m /documents [2m6ms[22m
+[2m20:56:57[22m [34m[200][39m /collections [2m9ms[22m
+[2m20:56:58[22m [34m[200][39m /documents [2m5ms[22m
+[2m20:57:00[22m [34m[200][39m /search [2m12ms[22m
+[2m20:57:02[22m [34m[200][39m /tags [2m7ms[22m
+[2m20:57:03[22m [34m[200][39m /search [2m9ms[22m
+[2m20:57:09[22m [34m[200][39m /documents/b19b4f26-2988-4a0d-aec8-e191b6224fa6 [2m6ms[22m
+[2m20:57:15[22m [34m[200][39m /profile [2m41ms[22m
+[2m20:57:16[22m [34m[200][39m /admin [2m32ms[22m
+[2m20:57:36[22m [34m[200][39m /documents [2m10ms[22m
+[2m20:57:42[22m [34m[200][39m /collections [2m7ms[22m
+[2m20:57:44[22m [34m[200][39m /documents [2m6ms[22m
+[2m20:58:40[22m [34m[200][39m /admin [2m3ms[22m

@@ -1,0 +1,53 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
+import { Input } from '../components/ui/Input';
+import { Badge } from '../components/ui/Badge';
+import { Badge } from '../components/ui/Badge';
+import { SearchWrapper } from '../components/search/SearchWrapper';
+---
+
+<DashboardLayout title="Search - Knowledge Base" currentPath="/search">
+  <div class="mb-5 border-b border-border pb-5">
+    <h1 class="text-xl font-semibold leading-7 text-text-main">Search</h1>
+    <p class="mt-1 text-sm text-text-muted">Search interface shell for future knowledge retrieval.</p>
+  </div>
+
+  <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <Card>
+      <CardHeader>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <CardTitle>Knowledge Search</CardTitle>
+            <CardDescription>Search will become active when document indexing is introduced.</CardDescription>
+          </div>
+          <Badge variant="secondary">Not indexed</Badge>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <SearchWrapper client:load />
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader>
+        <CardTitle>Filters</CardTitle>
+        <CardDescription>Available once content exists.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <button class="flex h-9 w-full items-center justify-between rounded-md border border-border bg-surface px-3 text-sm text-text-muted" type="button">
+          Type
+          <span>Any</span>
+        </button>
+        <button class="flex h-9 w-full items-center justify-between rounded-md border border-border bg-surface px-3 text-sm text-text-muted" type="button">
+          Tags
+          <span>Any</span>
+        </button>
+        <button class="flex h-9 w-full items-center justify-between rounded-md border border-border bg-surface px-3 text-sm text-text-muted" type="button">
+          Owner
+          <span>Any</span>
+        </button>
+      </CardContent>
+    </Card>
+  </div>
+</DashboardLayout>

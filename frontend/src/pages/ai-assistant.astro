@@ -1,0 +1,12 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { AiAssistantWrapper } from '../components/ai-assistant/AiAssistantWrapper';
+---
+
+<DashboardLayout
+  title="AI Assistant - Knowledge Base"
+  description="Ask questions about your uploaded knowledge base documents"
+  currentPath="/ai-assistant"
+>
+  <AiAssistantWrapper client:load />
+</DashboardLayout>

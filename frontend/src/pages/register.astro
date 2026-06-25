@@ -1,19 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { RegisterForm } from '../components/RegisterForm';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
 ---
 
-<Layout title="Sign Up - Knowledge Base" currentPath="/register">
-  <div class="min-h-screen flex flex-col items-center justify-center px-4 bg-canvas">
-    <div class="w-full max-w-md">
-      <div class="mb-8 text-center">
-        <h1 class="text-heading-xl text-primary mb-2">Create Account</h1>
-        <p class="text-body-md text-mute">Join the Knowledge Base community</p>
-      </div>
-
-      <div class="bg-soft-cloud rounded-lg p-8">
-        <RegisterForm client:only="react" />
-      </div>
-    </div>
+<Layout title="Create Account - Knowledge Base" currentPath="/register">
+  <div class="mx-auto w-full max-w-md">
+    <Card>
+      <CardHeader>
+        <CardTitle>Create account</CardTitle>
+        <CardDescription>Set up access to the knowledge base workspace.</CardDescription>
+      </CardHeader>
+      <CardContent>
+      <RegisterForm client:load />
+      </CardContent>
+    </Card>
   </div>
 </Layout>

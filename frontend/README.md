@@ -1,46 +1,89 @@
-# Astro Starter Kit: Basics
+# Knowledge Base Frontend
 
-```sh
-npm create astro@latest -- --template basics
-```
+Astro frontend for the knowledge base platform.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Phase 1
 
-## 🚀 Project Structure
+This phase includes the auth shell and dashboard entry points.
 
-Inside of your Astro project, you'll see the following folders and files:
+- Landing page
+- Login page
+- Register page
+- Dashboard layout
+- Navbar with auth-aware actions
+- Auth state management with JWT storage
+- Protected dashboard route
+- Backend API client
+
+## Environment Variables
+
+- `PUBLIC_API_BASE_URL` - optional, defaults to `http://localhost:8080/api`
+
+## Project Structure
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+frontend/
+├── astro.config.mjs
+├── package.json
+├── postcss.config.cjs
+├── tailwind.config.cjs
+├── src/
+│   ├── components/
+│   │   ├── AuthGuard.tsx
+│   │   ├── LoginForm.tsx
+│   │   ├── NavbarClient.tsx
+│   │   ├── RegisterForm.tsx
+│   │   └── UserMenu.tsx
+│   ├── layouts/
+│   │   └── Layout.astro
+│   ├── lib/
+│   │   ├── api.ts
+│   │   └── auth.tsx
+│   ├── pages/
+│   │   ├── dashboard.astro
+│   │   ├── index.astro
+│   │   ├── login.astro
+│   │   └── register.astro
+│   └── styles/
+│       └── globals.css
+└── public/
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Commands
 
-## 🧞 Commands
+Run these from the `frontend/` directory:
 
-All commands are run from the root of the project, from a terminal:
+```bash
+npm install
+npm run dev
+npm run build
+npm run preview
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Frontend Contract
 
-## 👀 Want to learn more?
+The frontend expects the backend to expose JSON responses in this shape:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```json
+{
+	"success": true,
+	"message": "Login successful",
+	"data": {
+		"tokenType": "Bearer",
+		"token": "...",
+		"user": {
+			"id": "...",
+			"fullName": "...",
+			"email": "...",
+			"role": "ADMIN"
+		}
+	}
+}
+```
+
+## Notes
+
+- JWT tokens are stored in `localStorage`.
+- Protected routes redirect to `/login` when no token is present.
+- The dashboard is client-protected and hydrates on the browser.
+- Tailwind CSS v4 is used for the shared design tokens and utilities.

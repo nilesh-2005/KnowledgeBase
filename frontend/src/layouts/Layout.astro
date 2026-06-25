@@ -1,7 +1,5 @@
 ---
 import '../styles/globals.css';
-import { NavbarClient } from '../components/NavbarClient';
-import { AuthProvider } from '../lib/auth';
 
 interface Props {
   title?: string;
@@ -26,24 +24,22 @@ const {
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="bg-canvas">
-    <AuthProvider client:only="react">
-      <NavbarClient client:only="react" currentPath={currentPath} />
-      <main class="min-h-screen bg-canvas">
+  <body class="min-h-screen bg-canvas text-text-main font-sans antialiased">
+    <header class="flex h-14 w-full items-center border-b border-border bg-panel px-4">
+      <div class="mx-auto flex w-full max-w-7xl items-center justify-between">
+        <a href="/" class="text-sm font-semibold text-text-main">
+          Knowledge Base
+        </a>
+        <nav class="flex items-center gap-3 text-sm">
+          <a class="text-text-muted hover:text-text-main" href="/login">Sign in</a>
+          <a class="inline-flex h-8 items-center rounded-md border border-border bg-panel px-3 font-medium text-text-main hover:bg-surface" href="/register">Create account</a>
+        </nav>
+      </div>
+    </header>
+    <main class="flex min-h-[calc(100vh-3.5rem)] w-full items-center justify-center bg-canvas px-4 py-10">
+      <div class="w-full">
         <slot />
-      </main>
-      <footer class="bg-soft-cloud border-t border-hairline-soft py-section mt-section">
-        <div class="container-xl text-center text-caption-md text-mute">
-          <p>&copy; 2026 Knowledge Base. All rights reserved.</p>
-        </div>
-      </footer>
-    </AuthProvider>
+      </div>
+    </main>
   </body>
 </html>
-
-<style>
-  :global(body) {
-    margin: 0;
-    padding: 0;
-  }
-</style>

@@ -1,0 +1,31 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { ProfileSummary } from '../components/ProfileSummary';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
+---
+
+<DashboardLayout title="Profile - Knowledge Base" currentPath="/profile">
+  <div class="mb-5 border-b border-border pb-5">
+    <h1 class="text-xl font-semibold leading-7 text-text-main">Profile</h1>
+    <p class="mt-1 text-sm text-text-muted">Your account details and workspace identity.</p>
+  </div>
+
+  <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <ProfileSummary client:only="react" />
+
+    <Card>
+      <CardHeader>
+        <CardTitle>Security</CardTitle>
+        <CardDescription>Account security controls will be expanded later.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div class="rounded-md border border-border bg-surface p-3">
+          <p class="text-sm font-medium text-text-main">JWT session active</p>
+          <p class="mt-1 text-sm text-text-muted">
+            Session state is managed locally by the current authentication flow.
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</DashboardLayout>

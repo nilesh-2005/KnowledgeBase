@@ -1,0 +1,62 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
+import { Select } from '../components/ui/Select';
+import { TextArea } from '../components/ui/TextArea';
+import { Badge } from '../components/ui/Badge';
+---
+
+<DashboardLayout title="Settings - Knowledge Base" currentPath="/settings">
+  <div class="mb-5 border-b border-border pb-5">
+    <h1 class="text-xl font-semibold leading-7 text-text-main">Settings</h1>
+    <p class="mt-1 text-sm text-text-muted">Workspace configuration shell for future administrative controls.</p>
+  </div>
+
+  <div class="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
+    <Card>
+      <CardHeader>
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <CardTitle>Workspace Defaults</CardTitle>
+            <CardDescription>These controls are visual placeholders until settings APIs are introduced.</CardDescription>
+          </div>
+          <Badge variant="secondary">UI only</Badge>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div class="grid gap-2">
+          <label class="text-sm font-medium text-text-main" for="visibility">Default visibility</label>
+          <Select id="visibility" disabled>
+            <option>Private workspace</option>
+          </Select>
+        </div>
+
+        <div class="grid gap-2">
+          <label class="text-sm font-medium text-text-main" for="retention">Retention note</label>
+          <TextArea id="retention" disabled placeholder="Retention and compliance notes will be configured here." />
+        </div>
+      </CardContent>
+    </Card>
+
+    <Card>
+      <CardHeader>
+        <CardTitle>System Status</CardTitle>
+        <CardDescription>Current frontend phase.</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div class="flex items-center justify-between gap-3 rounded-md border border-border bg-surface px-3 py-2">
+          <span class="text-sm text-text-muted">Authentication</span>
+          <Badge variant="success">Ready</Badge>
+        </div>
+        <div class="flex items-center justify-between gap-3 rounded-md border border-border bg-surface px-3 py-2">
+          <span class="text-sm text-text-muted">Documents</span>
+          <Badge variant="warning">Pending</Badge>
+        </div>
+        <div class="flex items-center justify-between gap-3 rounded-md border border-border bg-surface px-3 py-2">
+          <span class="text-sm text-text-muted">AI retrieval</span>
+          <Badge variant="warning">Pending</Badge>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</DashboardLayout>

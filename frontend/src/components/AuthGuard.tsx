@@ -13,10 +13,10 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex min-h-screen items-center justify-center bg-canvas">
         <div className="text-center">
-          <p className="text-body-strong text-ink mb-4">Loading...</p>
-          <div className="inline-block w-8 h-8 border-4 border-soft-cloud border-t-primary rounded-full animate-spin"></div>
+          <p className="mb-4 text-sm font-medium text-text-main">Loading workspace</p>
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-border border-t-primary" />
         </div>
       </div>
     );

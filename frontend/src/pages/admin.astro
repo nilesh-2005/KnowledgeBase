@@ -1,0 +1,15 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { AdminPanel } from '../components/admin/AdminPanel';
+---
+
+<DashboardLayout title="Admin — User Management" currentPath="/admin">
+  <div class="mb-5 flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold leading-7 text-text-main">Admin</h1>
+      <p class="mt-1 text-sm text-text-muted">Workspace administration and user management.</p>
+    </div>
+  </div>
+
+  <AdminPanel client:load />
+</DashboardLayout>

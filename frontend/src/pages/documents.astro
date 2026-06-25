@@ -1,0 +1,37 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { Badge } from '../components/ui/Badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/Card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/Table';
+import { FileText, Plus, Upload } from 'lucide-react';
+import { DocumentsPageWrapper } from '../components/documents/DocumentsPageWrapper';
+---
+
+<DashboardLayout title="Documents - Knowledge Base" currentPath="/documents">
+  <div class="mb-5 flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold leading-7 text-text-main">Documents</h1>
+      <p class="mt-1 text-sm text-text-muted">Document workspace shell for the upcoming document-management phase.</p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href="/documents/upload" class="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-panel px-3 text-sm font-medium text-text-main hover:bg-surface">
+        <Upload className="h-4 w-4" />
+        Upload
+      </a>
+    </div>
+  </div>
+
+  <Card>
+    <CardHeader>
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <CardTitle>Document Library</CardTitle>
+          <CardDescription>Uploaded files and knowledge entries will appear here.</CardDescription>
+        </div>
+      </div>
+    </CardHeader>
+    <CardContent>
+      <DocumentsPageWrapper client:load />
+    </CardContent>
+  </Card>
+</DashboardLayout>

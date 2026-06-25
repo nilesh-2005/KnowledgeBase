@@ -1,0 +1,15 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import { TagsPageWrapper } from '../components/tags/TagsPageWrapper';
+---
+
+<DashboardLayout title="Tags - Knowledge Base" currentPath="/tags">
+  <div class="mb-5 flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold leading-7 text-text-main">Tags</h1>
+      <p class="mt-1 text-sm text-text-muted">Manage global tags for categorizing documents.</p>
+    </div>
+  </div>
+
+  <TagsPageWrapper client:load />
+</DashboardLayout>

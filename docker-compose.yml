@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  postgres-vector:
+    image: pgvector/pgvector:pg16
+    container_name: knowledgebase-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Boboiboy@55
+      POSTGRES_DB: knowledgebase
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./docker/postgres-data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped

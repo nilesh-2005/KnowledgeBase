@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { apiClient, type RegisterRequest } from '../lib/api';
+import { useAuth } from '../lib/auth';
+import { Button } from './ui/Button';
+import { Input } from './ui/Input';
 
 export function RegisterForm() {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [fullName, setFullName] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -14,22 +18,22 @@ export function RegisterForm() {
     setError('');
     setIsLoading(true);
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long');
       setIsLoading(false);
       return;
     }
 
     try {
-      const request: RegisterRequest = { email, password, name };
+      const request: RegisterRequest = { email, password, fullName };
       const response = await apiClient.register(request);
 
-      if (response.status === 'success') {
+      if (response.success && response.data) {
+        login(response.data.token, response.data.user);
         setSuccess(true);
-        // Redirect to login after 2 seconds
         setTimeout(() => {
-          window.location.href = '/login?registered=true';
-        }, 2000);
+          window.location.href = '/dashboard';
+        }, 1000);
       } else {
         setError(response.message || 'Registration failed');
       }
@@ -42,82 +46,79 @@ export function RegisterForm() {
 
   if (success) {
     return (
-      <div className="text-center py-8">
-        <p className="text-success text-body-strong mb-2">✓ Account created successfully!</p>
-        <p className="text-mute">Redirecting to login...</p>
+      <div className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm">
+        <p className="font-medium text-green-700">Account created successfully</p>
+        <p className="mt-1 text-green-700/80">Redirecting to dashboard...</p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
+    <form onSubmit={handleSubmit} className="w-full space-y-4">
       {error && (
-        <div className="bg-red-100 border border-sale text-sale px-4 py-3 rounded-md text-body-md">
+        <div className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-error">
           {error}
         </div>
       )}
 
-      <div>
-        <label htmlFor="name" className="block text-body-strong text-ink mb-2">
+      <div className="space-y-1.5">
+        <label htmlFor="fullName" className="block text-sm font-medium text-text-main">
           Full Name
         </label>
-        <input
-          id="name"
+        <Input
+          id="fullName"
           type="text"
           required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="John Doe"
-          className="input-pill"
+          value={fullName}
+          onChange={(e) => setFullName(e.target.value)}
+          placeholder="Jane Cooper"
         />
       </div>
 
-      <div>
-        <label htmlFor="email" className="block text-body-strong text-ink mb-2">
+      <div className="space-y-1.5">
+        <label htmlFor="email" className="block text-sm font-medium text-text-main">
           Email
         </label>
-        <input
+        <Input
           id="email"
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@example.com"
-          className="input-pill"
+          placeholder="name@company.com"
         />
       </div>
 
-      <div>
-        <label htmlFor="password" className="block text-body-strong text-ink mb-2">
+      <div className="space-y-1.5">
+        <label htmlFor="password" className="block text-sm font-medium text-text-main">
           Password
         </label>
-        <input
+        <Input
           id="password"
           type="password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="••••••••"
-          className="input-pill"
+          placeholder="Password"
         />
-        <p className="text-caption-sm text-mute mt-1">
-          Minimum 6 characters
+        <p className="text-xs text-text-muted mt-1">
+          Minimum 8 characters
         </p>
       </div>
 
-      <button
+      <Button
         type="submit"
-        disabled={isLoading}
-        className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
+        isLoading={isLoading}
+        className="mt-2 w-full"
       >
-        {isLoading ? 'Creating Account...' : 'Create Account'}
-      </button>
+        Create account
+      </Button>
 
-      <div className="text-center">
-        <p className="text-body-md text-mute">
+      <div className="mt-6 text-center">
+        <p className="text-sm text-text-muted">
           Already have an account?{' '}
-          <a href="/login" className="text-primary font-bold hover:text-charcoal">
-            Sign In
+          <a href="/login" className="text-primary font-medium hover:text-text-muted transition-colors">
+            Sign in
           </a>
         </p>
       </div>

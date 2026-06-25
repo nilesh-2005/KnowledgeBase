@@ -12,8 +12,12 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^10.1.4",
     "@astrojs/react": "^5.0.7",
-    "astro": "^6.4.7"
+    "astro": "^6.4.7",
+    "lucide-react": "^1.21.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.1",
