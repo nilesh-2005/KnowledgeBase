@@ -76,6 +76,13 @@ public class DocumentController {
         return ResponseEntity.ok(documentService.getDocumentById(user.getId(), id));
     }
 
+    @GetMapping("/{id}/chunks")
+    public ResponseEntity<java.util.List<com.nilesh.knowledgebase.dto.DocumentChunkResponse>> getDocumentChunks(
+            @AuthenticationPrincipal UserPrincipal user,
+            @PathVariable UUID id) {
+        return ResponseEntity.ok(documentService.getDocumentChunks(user.getId(), id));
+    }
+
     @GetMapping("/{id}/download")
     public ResponseEntity<Resource> downloadDocument(
             @AuthenticationPrincipal UserPrincipal user,

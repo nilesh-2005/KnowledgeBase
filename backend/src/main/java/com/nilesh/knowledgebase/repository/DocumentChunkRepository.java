@@ -58,4 +58,30 @@ public interface DocumentChunkRepository extends JpaRepository<DocumentChunk, UU
             """)
     List<Object[]> findSimilarChunksWithDistanceForAdmin(@Param("embedding") float[] embedding,
                                                          Pageable pageable);
+
+    @Query(value = """
+            SELECT c.id as chunk_id, d.id as document_id, d.title as document_title, c.chunk_index, c.content, 
+                   ts_rank(c.search_vector, to_tsquery('english', :query)) as rank
+            FROM document_chunks c
+            JOIN documents d ON c.document_id = d.id
+            WHERE c.search_vector @@ to_tsquery('english', :query)
+            AND (d.visibility = 'PUBLIC'
+                 OR d.visibility = 'TEAM'
+                 OR d.owner_id = :userId)
+            ORDER BY rank DESC
+            """, nativeQuery = true)
+    List<Object[]> findKeywordChunksForUser(@Param("query") String query,
+                                            @Param("userId") UUID userId,
+                                            Pageable pageable);
+
+    @Query(value = """
+            SELECT c.id as chunk_id, d.id as document_id, d.title as document_title, c.chunk_index, c.content, 
+                   ts_rank(c.search_vector, to_tsquery('english', :query)) as rank
+            FROM document_chunks c
+            JOIN documents d ON c.document_id = d.id
+            WHERE c.search_vector @@ to_tsquery('english', :query)
+            ORDER BY rank DESC
+            """, nativeQuery = true)
+    List<Object[]> findKeywordChunksForAdmin(@Param("query") String query,
+                                             Pageable pageable);
 }

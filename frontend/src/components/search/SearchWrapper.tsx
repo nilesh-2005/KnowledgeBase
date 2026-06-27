@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { apiClient, type DocumentResponse } from '../../lib/api';
-import { FileSearch, Search } from 'lucide-react';
+import { apiClient, type ChunkSearchResult } from '../../lib/api';
+import { FileSearch, Search, ChevronRight } from 'lucide-react';
+
+interface GroupedResult {
+  documentId: string;
+  documentTitle: string;
+  chunks: ChunkSearchResult[];
+}
 
 export const SearchWrapper: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<DocumentResponse[]>([]);
+  const [groupedResults, setGroupedResults] = useState<GroupedResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
@@ -19,14 +25,27 @@ export const SearchWrapper: React.FC = () => {
 
   const performSearch = async (q: string) => {
     if (!q.trim()) {
-      setResults([]);
+      setGroupedResults([]);
       setHasSearched(false);
       return;
     }
     try {
       setLoading(true);
-      const res = await apiClient.searchDocuments(q, 0, 50);
-      setResults(res.content || []);
+      const res = await apiClient.searchChunks(q, 50);
+      
+      const groups = new Map<string, GroupedResult>();
+      res.forEach(chunk => {
+        if (!groups.has(chunk.documentId)) {
+          groups.set(chunk.documentId, {
+            documentId: chunk.documentId,
+            documentTitle: chunk.documentTitle,
+            chunks: []
+          });
+        }
+        groups.get(chunk.documentId)!.chunks.push(chunk);
+      });
+      
+      setGroupedResults(Array.from(groups.values()));
       setHasSearched(true);
     } catch (err) {
       console.error(err);
@@ -51,7 +70,7 @@ export const SearchWrapper: React.FC = () => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 pl-9" 
-          placeholder="Search documents by title or description..." 
+          placeholder="Search through documents..." 
         />
       </form>
 
@@ -60,7 +79,7 @@ export const SearchWrapper: React.FC = () => {
            <div className="flex justify-center py-8">
              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
            </div>
-        ) : hasSearched && results.length === 0 ? (
+        ) : hasSearched && groupedResults.length === 0 ? (
           <div className="flex min-h-72 flex-col items-center justify-center rounded-md border border-dashed border-border bg-surface px-6 py-10 text-center">
             <div className="flex h-10 w-10 items-center justify-center rounded-md border border-border bg-panel">
               <FileSearch className="h-5 w-5 text-text-muted" />
@@ -70,21 +89,34 @@ export const SearchWrapper: React.FC = () => {
               We couldn't find anything matching "{query}".
             </p>
           </div>
-        ) : hasSearched && results.length > 0 ? (
-          <ul className="divide-y divide-gray-200 border rounded-md">
-            {results.map(doc => (
-              <li key={doc.id} className="p-4 hover:bg-gray-50 flex justify-between items-center">
-                <div>
-                  <a href={`/documents/${doc.id}`} className="text-sm font-medium text-indigo-600 hover:text-indigo-900">{doc.title}</a>
-                  <p className="text-sm text-gray-500">{doc.description}</p>
+        ) : hasSearched && groupedResults.length > 0 ? (
+          <ul className="space-y-4">
+            {groupedResults.map(group => (
+              <li key={group.documentId} className="border rounded-md bg-white overflow-hidden shadow-sm">
+                <div className="p-4 border-b bg-gray-50 flex items-center justify-between">
+                  <a href={`/documents/${group.documentId}`} className="text-sm font-medium text-indigo-600 hover:text-indigo-900 flex items-center gap-1">
+                    {group.documentTitle}
+                    <ChevronRight className="h-4 w-4" />
+                  </a>
+                  <span className="text-xs text-gray-500">{group.chunks.length} matches</span>
                 </div>
-                <div className="flex gap-2">
-                  {doc.tags?.map(tag => (
-                     <span key={tag.id} className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                       <span className="w-2 h-2 rounded-full" style={{ backgroundColor: tag.color || '#6366F1' }} />
-                       {tag.name}
-                     </span>
+                <div className="divide-y divide-gray-100">
+                  {group.chunks.slice(0, 3).map(chunk => (
+                    <a href={`/documents/${group.documentId}?chunk=${chunk.chunkIndex}`} key={`${group.documentId}-${chunk.chunkIndex}`} className="block p-4 hover:bg-gray-50 transition-colors">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Chunk {chunk.chunkIndex}</span>
+                        <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-600">Score: {Math.round(chunk.score * 100)}%</span>
+                      </div>
+                      <p className="text-sm text-gray-600 line-clamp-2 italic">"{chunk.content}"</p>
+                    </a>
                   ))}
+                  {group.chunks.length > 3 && (
+                     <div className="p-3 text-center bg-gray-50 border-t">
+                       <a href={`/documents/${group.documentId}`} className="text-xs text-indigo-600 hover:text-indigo-800 font-medium">
+                         View {group.chunks.length - 3} more matches in document
+                       </a>
+                     </div>
+                  )}
                 </div>
               </li>
             ))}

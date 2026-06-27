@@ -29,10 +29,12 @@ export function ChatInput({
   }, [value]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      if (!disabled && value.trim()) {
-        onSubmit();
+    if (event.key === 'Enter') {
+      if (event.ctrlKey || event.metaKey || !event.shiftKey) {
+        event.preventDefault();
+        if (!disabled && value.trim()) {
+          onSubmit();
+        }
       }
     }
   };
@@ -60,9 +62,8 @@ export function ChatInput({
           onKeyDown={handleKeyDown}
           disabled={disabled}
           placeholder={placeholder}
-          className="block max-h-40 min-h-9 w-full resize-none rounded-md border border-border bg-panel px-3 py-2 text-sm text-text-main placeholder:text-text-subtle focus:border-border-focus focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus/20 disabled:cursor-not-allowed disabled:bg-surface disabled:opacity-70"
+          className="block max-h-40 min-h-[40px] w-full resize-none rounded-md border border-border bg-panel px-3 py-2.5 text-[13px] text-text-main placeholder:text-text-subtle focus:border-border-focus focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus/20 disabled:cursor-not-allowed disabled:bg-surface disabled:opacity-70"
         />
-        <p className="mt-1 text-xs text-text-subtle">Enter to send · Shift+Enter for new line</p>
       </div>
       <Button
         type="submit"

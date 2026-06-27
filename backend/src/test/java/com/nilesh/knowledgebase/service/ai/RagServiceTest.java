@@ -4,6 +4,8 @@ import com.nilesh.knowledgebase.config.RagProperties;
 import com.nilesh.knowledgebase.dto.ChatResponse;
 import com.nilesh.knowledgebase.dto.ChatSource;
 import com.nilesh.knowledgebase.dto.RetrievedChunk;
+import com.nilesh.knowledgebase.repository.DocumentRepository;
+import com.nilesh.knowledgebase.service.ChatHistoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,27 +25,31 @@ import static org.mockito.Mockito.when;
 
 class RagServiceTest {
 
-    private SimilaritySearchService similaritySearchService;
+    private UnifiedSearchService unifiedSearchService;
     private PromptBuilderService promptBuilderService;
     private LlmService llmService;
     private RagProperties ragProperties;
+    private ChatHistoryService chatHistoryService;
+    private DocumentRepository documentRepository;
     private RagService ragService;
 
     @BeforeEach
     void setUp() {
-        similaritySearchService = mock(SimilaritySearchService.class);
+        unifiedSearchService = mock(UnifiedSearchService.class);
         promptBuilderService = mock(PromptBuilderService.class);
         llmService = mock(LlmService.class);
         ragProperties = new RagProperties();
         ragProperties.setTopK(5);
         ragProperties.setExcerptLength(200);
-        ragService = new RagService(similaritySearchService, promptBuilderService, llmService, ragProperties);
+        chatHistoryService = mock(ChatHistoryService.class);
+        documentRepository = mock(DocumentRepository.class);
+        ragService = new RagService(unifiedSearchService, promptBuilderService, llmService, ragProperties, chatHistoryService, documentRepository);
     }
 
     @Test
     void askReturnsRefusalWhenNoRetrievalResults() {
         UUID userId = UUID.randomUUID();
-        when(similaritySearchService.searchForUser(userId, "unknown topic", 5)).thenReturn(List.of());
+        when(unifiedSearchService.searchForUser(userId, "unknown topic", 5, "hybrid")).thenReturn(List.of());
 
         ChatResponse response = ragService.ask(userId, "unknown topic", 5);
 
@@ -63,9 +69,12 @@ class RagServiceTest {
                 105,
                 "Psychological manipulation uses influence tactics.",
                 0.82,
+                0.22,
+                "hybrid",
+                0.82,
                 0.22
         );
-        when(similaritySearchService.searchForUser(userId, "manipulation", 5)).thenReturn(List.of(chunk));
+        when(unifiedSearchService.searchForUser(userId, "manipulation", 5, "hybrid")).thenReturn(List.of(chunk));
         when(promptBuilderService.selectChunksForContext(List.of(chunk))).thenReturn(List.of(chunk));
         when(promptBuilderService.buildContext(List.of(chunk))).thenReturn("[SOURCE 1] context");
         when(promptBuilderService.buildUserPrompt(eq("manipulation"), eq("[SOURCE 1] context")))
@@ -97,9 +106,12 @@ class RagServiceTest {
                 0,
                 "Some unrelated content.",
                 0.47,
+                1.13,
+                "hybrid",
+                0.47,
                 1.13
         );
-        when(similaritySearchService.searchForUser(userId, "capital of Mars", 5)).thenReturn(List.of(chunk));
+        when(unifiedSearchService.searchForUser(userId, "capital of Mars", 5, "hybrid")).thenReturn(List.of(chunk));
         when(promptBuilderService.selectChunksForContext(List.of(chunk))).thenReturn(List.of(chunk));
         when(promptBuilderService.buildContext(List.of(chunk))).thenReturn("[SOURCE 1] context");
         when(promptBuilderService.buildUserPrompt(eq("capital of Mars"), eq("[SOURCE 1] context")))
@@ -125,9 +137,12 @@ class RagServiceTest {
                 0,
                 "Loosely related content.",
                 0.40,
+                1.5,
+                "hybrid",
+                0.40,
                 1.5
         );
-        when(similaritySearchService.searchForUser(userId, "obscure topic", 5)).thenReturn(List.of(chunk));
+        when(unifiedSearchService.searchForUser(userId, "obscure topic", 5, "hybrid")).thenReturn(List.of(chunk));
 
         ChatResponse response = ragService.ask(userId, "obscure topic", 5);
 
@@ -147,9 +162,12 @@ class RagServiceTest {
                 2,
                 "Somewhat relevant content.",
                 0.52,
+                0.92,
+                "hybrid",
+                0.52,
                 0.92
         );
-        when(similaritySearchService.searchForUser(userId, "partial", 5)).thenReturn(List.of(chunk));
+        when(unifiedSearchService.searchForUser(userId, "partial", 5, "hybrid")).thenReturn(List.of(chunk));
         when(promptBuilderService.selectChunksForContext(List.of(chunk))).thenReturn(List.of(chunk));
         when(promptBuilderService.buildContext(List.of(chunk))).thenReturn("[SOURCE 1] context");
         when(promptBuilderService.buildUserPrompt(eq("partial"), eq("[SOURCE 1] context")))

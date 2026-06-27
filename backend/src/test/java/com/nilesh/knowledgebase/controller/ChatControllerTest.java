@@ -13,6 +13,7 @@ import com.nilesh.knowledgebase.entity.Role;
 import com.nilesh.knowledgebase.entity.User;
 import com.nilesh.knowledgebase.security.UserPrincipal;
 import com.nilesh.knowledgebase.service.ai.RagService;
+import com.nilesh.knowledgebase.service.ChatHistoryService;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,6 +39,9 @@ class ChatControllerTest {
     @Mock
     private RagService ragService;
 
+    @Mock
+    private ChatHistoryService chatHistoryService;
+
     private MockMvc mockMvc;
     private UUID userId;
     private UserPrincipal principal;
@@ -54,7 +58,7 @@ class ChatControllerTest {
                 .build();
         principal = UserPrincipal.from(user);
 
-        mockMvc = MockMvcBuilders.standaloneSetup(new ChatController(ragService))
+        mockMvc = MockMvcBuilders.standaloneSetup(new ChatController(ragService, chatHistoryService))
                 .setCustomArgumentResolvers(new HandlerMethodArgumentResolver() {
                     @Override
                     public boolean supportsParameter(MethodParameter parameter) {

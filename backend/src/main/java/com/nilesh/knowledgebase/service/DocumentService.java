@@ -150,6 +150,32 @@ public class DocumentService {
     }
 
     @Transactional(readOnly = true)
+    public List<com.nilesh.knowledgebase.dto.DocumentChunkResponse> getDocumentChunks(UUID userId, UUID documentId) {
+        Document document = documentRepository.findById(documentId)
+                .orElseThrow(() -> new ResourceNotFoundException("Document not found"));
+
+        User user = userRepository.findById(userId).orElseThrow();
+
+        if (document.getVisibility() == Visibility.PRIVATE && 
+            !document.getOwner().getId().equals(userId) && 
+            user.getRole() != Role.ADMIN) {
+            throw new AccessDeniedException("You do not have permission to view chunks for this document");
+        }
+
+        return documentChunkRepository.findByDocumentIdOrderByChunkIndexAsc(documentId).stream()
+                .map(c -> new com.nilesh.knowledgebase.dto.DocumentChunkResponse(
+                        c.getId(),
+                        c.getChunkIndex(),
+                        c.getContent(),
+                        c.getCharacterStart(),
+                        c.getCharacterEnd(),
+                        c.getTokenCount(),
+                        c.getEmbedding() != null
+                ))
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public Resource downloadDocumentResource(UUID userId, UUID documentId) {
         Document document = documentRepository.findById(documentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Document not found"));

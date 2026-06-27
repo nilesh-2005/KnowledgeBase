@@ -61,6 +61,27 @@ export interface DocumentResponse {
   updatedAt: string;
 }
 
+export interface ChunkSearchResult {
+  documentId: string;
+  documentTitle: string;
+  chunkIndex: number;
+  score: number;
+  content: string;
+  mode: string;
+  semanticScore: number;
+  keywordScore: number;
+}
+
+export interface DocumentChunkResponse {
+  id: string;
+  chunkIndex: number;
+  content: string;
+  characterStart: number;
+  characterEnd: number;
+  tokenCount: number;
+  embeddingExists: boolean;
+}
+
 export interface DocumentUploadRequest {
   title: string;
   description: string;
@@ -84,6 +105,53 @@ export interface ChatSource {
   chunkIndex: number;
   score: number;
   excerpt: string;
+}
+
+export interface ChatCitation {
+  id: string;
+  chunkIndex: number;
+  score: number;
+  document: {
+    id: string;
+    title: string;
+  };
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+  confidence?: ChatConfidence;
+  retrievalCount?: number;
+  topScore?: number;
+  retrievalTimeMs?: number;
+  generationTimeMs?: number;
+  totalTimeMs?: number;
+  model?: string;
+  promptVersion?: string;
+  temperature?: number;
+  topK?: number;
+  createdAt: string;
+  citations?: ChatCitation[];
+}
+
+export interface Conversation {
+  id: string;
+  title: string;
+  archived: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ChatStreamEvent {
+  type: 'METADATA' | 'CHUNK' | 'DONE' | 'ERROR';
+  text?: string;
+  sources?: ChatSource[];
+  confidence?: ChatConfidence;
+  retrievalCount?: number;
+  retrievalTimeMs?: number;
+  generationTimeMs?: number;
+  totalTimeMs?: number;
 }
 
 export interface ChatResponse {
@@ -219,6 +287,18 @@ class ApiClient {
 
   async getDocument(id: string): Promise<DocumentResponse> {
     return this.request(`/documents/${id}`, {
+      method: 'GET',
+    });
+  }
+
+  async getDocumentChunks(id: string): Promise<DocumentChunkResponse[]> {
+    return this.request(`/documents/${id}/chunks`, {
+      method: 'GET',
+    });
+  }
+
+  async searchChunks(query: string, limit = 50): Promise<ChunkSearchResult[]> {
+    return this.request(`/search?q=${encodeURIComponent(query)}&limit=${limit}`, {
       method: 'GET',
     });
   }
@@ -388,6 +468,113 @@ class ApiClient {
 
     return payload;
   }
+
+  // --- Conversation APIs ---
+
+  async createConversation(firstMessage: string): Promise<ApiResponse<Conversation>> {
+    return this.request('/chat/conversations', {
+      method: 'POST',
+      body: JSON.stringify({ firstMessage }),
+    });
+  }
+
+  async getConversations(page = 0, size = 50): Promise<ApiResponse<PageResponse<Conversation>>> {
+    return this.request(`/chat/conversations?page=${page}&size=${size}`, {
+      method: 'GET',
+    });
+  }
+
+  async getConversationMessages(id: string): Promise<ApiResponse<ChatMessage[]>> {
+    return this.request(`/chat/conversations/${id}`, {
+      method: 'GET',
+    });
+  }
+
+  async updateConversation(id: string, updates: Partial<Conversation>): Promise<ApiResponse<Conversation>> {
+    return this.request(`/chat/conversations/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  async deleteConversation(id: string): Promise<ApiResponse<void>> {
+    return this.request(`/chat/conversations/${id}`, {
+      method: 'DELETE',
+    });
+  }
 }
 
 export const apiClient = new ApiClient();
+
+export async function streamChatMessage(
+  conversationId: string,
+  data: ChatRequest,
+  onEvent: (event: ChatStreamEvent) => void
+): Promise<void> {
+  const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL ?? 'http://localhost:8080/api';
+  const url = `${API_BASE_URL}/chat/conversations/${conversationId}/messages`;
+  const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    'Accept': 'text/event-stream',
+  };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+
+  console.log('[SSE Frontend] Sending stream request to:', url);
+  console.log('[SSE Frontend] Request payload:', data);
+  const response = await fetch(url, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(data),
+  });
+
+  console.log('[SSE Frontend] Received HTTP status:', response.status, response.statusText);
+
+  if (!response.ok) {
+    const errText = await response.text().catch(() => 'No response body');
+    console.error('[SSE Frontend] HTTP error body:', errText);
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  if (!response.body) throw new Error("ReadableStream not yet supported.");
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder('utf-8');
+  let buffer = '';
+  let receivedFirstEvent = false;
+
+  console.log('[SSE Frontend] Stream opened successfully. Waiting for events...');
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const lines = buffer.split('\n');
+    
+    // Keep the last partial line in the buffer
+    buffer = lines.pop() || '';
+
+    for (const line of lines) {
+      if (line.startsWith('data:')) {
+        const currentEventData = line.substring(5).trim();
+        if (currentEventData) {
+          try {
+            const event: ChatStreamEvent = JSON.parse(currentEventData);
+            if (!receivedFirstEvent) {
+              console.log('[SSE Frontend] Received first SSE event:', event.type);
+              receivedFirstEvent = true;
+            }
+            if (event.type === 'DONE') {
+              console.log('[SSE Frontend] Received completion event. Stream done.');
+            }
+            onEvent(event);
+          } catch (e) {
+            console.error('[SSE Frontend] Failed to parse SSE event:', currentEventData);
+          }
+        }
+      }
+    }
+  }
+}

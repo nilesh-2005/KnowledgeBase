@@ -76,6 +76,9 @@ class PromptBuilderServiceTest {
                 chunkIndex,
                 content,
                 0.82,
+                0.22,
+                "hybrid",
+                0.82,
                 0.22
         );
     }

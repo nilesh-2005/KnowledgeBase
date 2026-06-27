@@ -3,6 +3,8 @@ package com.nilesh.knowledgebase.service.ai;
 import com.nilesh.knowledgebase.config.RagProperties;
 import com.nilesh.knowledgebase.dto.RetrievedChunk;
 import org.junit.jupiter.api.Test;
+import com.nilesh.knowledgebase.repository.DocumentRepository;
+import com.nilesh.knowledgebase.service.ChatHistoryService;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,7 +20,7 @@ class RagServicePromptTest {
 
     @Test
     void askIncludesRetrievedChunksInLlmPrompt() {
-        SimilaritySearchService similaritySearchService = mock(SimilaritySearchService.class);
+        UnifiedSearchService unifiedSearchService = mock(UnifiedSearchService.class);
         LlmService llmService = mock(LlmService.class);
         RagProperties properties = new RagProperties();
         properties.setTopK(5);
@@ -33,19 +35,27 @@ class RagServicePromptTest {
                 0,
                 "Secret content",
                 0.9,
+                0.1,
+                "hybrid",
+                0.9,
                 0.1
         );
 
-        when(similaritySearchService.searchForUser(userId, "secret", 5)).thenReturn(List.of(chunk));
+        when(unifiedSearchService.searchForUser(userId, "secret", 5, "hybrid")).thenReturn(List.of(chunk));
         when(llmService.generate(eq(OllamaChatServiceImpl.defaultSystemPrompt()), org.mockito.ArgumentMatchers.argThat(
                 prompt -> prompt.contains("Private Notes") && prompt.contains("Secret content")
         ))).thenReturn("Answer from context [SOURCE 1]");
 
+        ChatHistoryService chatHistoryService = mock(ChatHistoryService.class);
+        DocumentRepository documentRepository = mock(DocumentRepository.class);
+
         RagService ragService = new RagService(
-                similaritySearchService,
+                unifiedSearchService,
                 new PromptBuilderService(properties),
                 llmService,
-                properties
+                properties,
+                chatHistoryService,
+                documentRepository
         );
 
         var response = ragService.ask(userId, "secret", 5);

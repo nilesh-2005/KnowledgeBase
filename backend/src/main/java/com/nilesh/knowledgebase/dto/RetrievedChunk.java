@@ -9,5 +9,8 @@ public record RetrievedChunk(
         int chunkIndex,
         String content,
         double score,
-        double distance
+        double distance,
+        String mode,
+        double semanticScore,
+        double keywordScore
 ) {}

@@ -22,8 +22,12 @@ const labelMap: Record<ChatConfidence, string> = {
 
 export function ConfidenceBadge({ confidence }: ConfidenceBadgeProps) {
   return (
-    <Badge variant={variantMap[confidence]} aria-label={labelMap[confidence]}>
-      {confidence}
+    <Badge 
+      variant={variantMap[confidence]} 
+      aria-label={labelMap[confidence]}
+      className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider shadow-sm"
+    >
+      {labelMap[confidence]}
     </Badge>
   );
 }

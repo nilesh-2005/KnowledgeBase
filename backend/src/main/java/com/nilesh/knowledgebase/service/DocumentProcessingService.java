@@ -67,19 +67,22 @@ public class DocumentProcessingService {
             // Clean up the text
             extractedText = extractedText.replaceAll("\\s+", " ").trim();
 
-            // Step 3: Generate chunks
-            List<String> textChunks = splitIntoChunks(extractedText);
+            // Step 3: Generate chunks with positional data
+            List<ChunkData> textChunks = splitIntoChunks(extractedText);
             log.info("[Pipeline] CHUNKS_GENERATED  documentId={} count={}", documentId, textChunks.size());
 
             // Step 4: Persist chunks
             List<DocumentChunk> chunksToSave = new ArrayList<>();
             for (int i = 0; i < textChunks.size(); i++) {
-                String chunkContent = textChunks.get(i);
+                ChunkData chunkData = textChunks.get(i);
+                String chunkContent = chunkData.content();
                 DocumentChunk chunk = DocumentChunk.builder()
                         .document(document)
                         .chunkIndex(i)
                         .content(chunkContent)
                         .tokenCount(estimateTokenCount(chunkContent))
+                        .characterStart(chunkData.start())
+                        .characterEnd(chunkData.end())
                         .build();
                 chunksToSave.add(chunk);
             }
@@ -111,8 +114,10 @@ public class DocumentProcessingService {
         }
     }
 
-    private List<String> splitIntoChunks(String text) {
-        List<String> chunks = new ArrayList<>();
+    private record ChunkData(String content, int start, int end) {}
+
+    private List<ChunkData> splitIntoChunks(String text) {
+        List<ChunkData> chunks = new ArrayList<>();
         int length = text.length();
         int i = 0;
 
@@ -126,7 +131,7 @@ public class DocumentProcessingService {
                 }
             }
 
-            chunks.add(text.substring(i, end).trim());
+            chunks.add(new ChunkData(text.substring(i, end).trim(), i, end));
 
             i = end - CHUNK_OVERLAP;
             if (i < 0) i = 0;

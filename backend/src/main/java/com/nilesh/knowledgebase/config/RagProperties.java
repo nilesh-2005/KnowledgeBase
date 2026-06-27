@@ -33,6 +33,14 @@ public class RagProperties {
     @Min(10)
     private int llmTimeoutSeconds = 120;
 
+    @DecimalMin("0.0")
+    @DecimalMax("1.0")
+    private double semanticWeight = 0.70;
+
+    @DecimalMin("0.0")
+    @DecimalMax("1.0")
+    private double keywordWeight = 0.30;
+
     public int getTopK() {
         return topK;
     }
@@ -79,5 +87,21 @@ public class RagProperties {
 
     public void setLlmTimeoutSeconds(int llmTimeoutSeconds) {
         this.llmTimeoutSeconds = llmTimeoutSeconds;
+    }
+
+    public double getSemanticWeight() {
+        return semanticWeight;
+    }
+
+    public void setSemanticWeight(double semanticWeight) {
+        this.semanticWeight = semanticWeight;
+    }
+
+    public double getKeywordWeight() {
+        return keywordWeight;
+    }
+
+    public void setKeywordWeight(double keywordWeight) {
+        this.keywordWeight = keywordWeight;
     }
 }

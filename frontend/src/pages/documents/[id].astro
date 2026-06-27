@@ -2,21 +2,21 @@
 export const prerender = false;
 
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import { DocumentDetailWrapper } from '../../components/documents/DocumentDetailWrapper';
+import { DocumentViewer } from '../../components/DocumentViewer';
 
 const { id } = Astro.params;
 ---
 
-<DashboardLayout title="Document Details - Knowledge Base" currentPath="/documents">
+<DashboardLayout title="Document Viewer - Knowledge Base" currentPath="/documents">
   <div class="mb-5 flex flex-col gap-3 border-b border-border pb-5 sm:flex-row sm:items-center sm:justify-between">
     <div>
-      <h1 class="text-xl font-semibold leading-7 text-text-main">Document Details</h1>
-      <p class="mt-1 text-sm text-text-muted">View metadata and manage this document.</p>
+      <h1 class="text-xl font-semibold leading-7 text-text-main">Document Viewer</h1>
+      <p class="mt-1 text-sm text-text-muted">Read and interact with document content.</p>
     </div>
     <a href="/documents" class="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-panel px-3 text-sm font-medium text-text-main hover:bg-surface">
       Back to Documents
     </a>
   </div>
 
-  <DocumentDetailWrapper documentId={id as string} client:load />
+  <DocumentViewer documentId={id as string} client:load />
 </DashboardLayout>

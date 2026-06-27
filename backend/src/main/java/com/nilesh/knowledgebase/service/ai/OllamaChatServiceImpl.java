@@ -65,6 +65,24 @@ public class OllamaChatServiceImpl implements LlmService {
         }
     }
 
+    @Override
+    public reactor.core.publisher.Flux<String> stream(String systemPrompt, String userPrompt) {
+        Prompt prompt = new Prompt(List.of(
+                new SystemMessage(systemPrompt),
+                new UserMessage(userPrompt)
+        ));
+
+        return chatModel.stream(prompt)
+                .map(response -> {
+                    if (response.getResult() != null && response.getResult().getOutput() != null && response.getResult().getOutput().getText() != null) {
+                        return response.getResult().getOutput().getText();
+                    }
+                    return "";
+                })
+                .filter(text -> !text.isEmpty())
+                .onErrorMap(e -> new LlmServiceUnavailableException("AI stream unavailable", e));
+    }
+
     public static String defaultSystemPrompt() {
         return SYSTEM_PROMPT;
     }

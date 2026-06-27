@@ -2,13 +2,19 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { cn } from '../../lib/cn';
+import type { ChatSource } from '../../lib/api';
 
 interface MarkdownContentProps {
   content: string;
   className?: string;
+  sources?: ChatSource[];
 }
 
-export function MarkdownContent({ content, className }: MarkdownContentProps) {
+export function MarkdownContent({ content, className, sources }: MarkdownContentProps) {
+  // Pre-process content to convert [SOURCE X] to standard markdown links
+  const processedContent = React.useMemo(() => {
+    return content.replace(/\[SOURCE\s+(\d+)\]/gi, '[$1](#source-$1)');
+  }, [content]);
   return (
     <div
       className={cn(
@@ -42,18 +48,39 @@ export function MarkdownContent({ content, className }: MarkdownContentProps) {
             );
           },
           pre: ({ children }) => <>{children}</>,
-          a: ({ href, children }) => (
-            <a href={href} className="text-primary underline underline-offset-2 hover:text-blue-700" target="_blank" rel="noopener noreferrer">
-              {children}
-            </a>
-          ),
+          a: ({ href, children }) => {
+            if (href?.startsWith('#source-')) {
+              const index = parseInt(href.replace('#source-', ''), 10) - 1;
+              const source = sources?.[index];
+              if (source) {
+                return (
+                  <a
+                    href={`/documents/${source.documentId}?chunk=${source.chunkIndex}`}
+                    className="inline-flex items-center justify-center rounded-sm bg-surface px-1 py-0.5 text-[10px] font-semibold text-text-muted border border-border hover:bg-border/50 hover:text-text-main transition-colors mx-0.5 align-baseline relative -top-1"
+                  >
+                    [{children}]
+                  </a>
+                );
+              }
+              return (
+                <span className="inline-flex items-center justify-center rounded-sm bg-surface px-1 py-0.5 text-[10px] font-semibold text-text-muted border border-border mx-0.5 align-baseline relative -top-1">
+                  [{children}]
+                </span>
+              );
+            }
+            return (
+              <a href={href} className="text-primary underline underline-offset-2 hover:text-blue-700" target="_blank" rel="noopener noreferrer">
+                {children}
+              </a>
+            );
+          },
           blockquote: ({ children }) => (
             <blockquote className="my-2 border-l-2 border-border pl-3 text-text-muted">{children}</blockquote>
           ),
           strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
         }}
       >
-        {content}
+        {processedContent}
       </ReactMarkdown>
     </div>
   );

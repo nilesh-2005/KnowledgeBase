@@ -44,6 +44,12 @@ public class DocumentChunk extends BaseAuditableEntity {
     @Column(nullable = false)
     private Integer tokenCount;
 
+    @Column
+    private Integer characterStart;
+
+    @Column
+    private Integer characterEnd;
+
     @org.hibernate.annotations.JdbcTypeCode(org.hibernate.type.SqlTypes.VECTOR)
     @Column(columnDefinition = "vector(768)")
     private float[] embedding;

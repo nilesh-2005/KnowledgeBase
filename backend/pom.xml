@@ -117,10 +117,10 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Flyway for Database Migrations -->
+		<!-- Flyway for Database Migrations (Spring Boot 4.x starter) -->
 		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-flyway</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>
